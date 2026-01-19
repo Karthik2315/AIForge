@@ -1,0 +1,32 @@
+# =====================
+# Node / Dependencies
+# =====================
+node_modules/
+
+# =====================
+# Client
+# =====================
+client/node_modules/
+client/dist/
+client/dist-ssr/
+client/.env
+*.local
+
+# =====================
+# Server
+# =====================
+server/node_modules/
+server/dist/
+server/.env
+
+# =====================
+# IDE / Editor
+# =====================
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# =====================
+# OS files
+# =====================
+.DS_Store
