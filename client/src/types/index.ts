@@ -27,7 +27,7 @@ export interface Project {
     current_code: string;
     createdAt: string;
     updatedAt: string;
-    userId: string;
+    userId: string; 
     user?: User;
     isPublished?: boolean;
     versionId?: string;
