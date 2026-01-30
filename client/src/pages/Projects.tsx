@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import type { Project } from '../types';
 import { ArrowBigDownDash, ArrowBigDownDashIcon, EyeIcon, EyeOffIcon, LaptopIcon, Loader2Icon, MessageSquare, SaveIcon, Smartphone, TabletIcon, XIcon } from 'lucide-react';
-import { dummyConversations, dummyProjects } from '../assets/assets';
+import { dummyConversations, dummyProjects, dummyVersion } from '../assets/assets';
+import SideBar from '../components/SideBar';
 
 const Projects = () => {
   const navigate = useNavigate();
   const {projectId} = useParams();
   const [project,setProject] = useState<Project | null>();
   const [loading,setLoading] = useState(true);
-  const [isGenerating,setIsGenerating] = useState(true);
+  const [isGenerating,setIsGenerating] = useState(false);
   const [device,setDevice] = useState<"phone" | "tablet" |"desktop">("desktop");
   const [isMenuOpen,setIsMenuOpen] = useState(false);
   const [isSaving,setIsSaving] = useState(false);
@@ -19,7 +20,7 @@ const Projects = () => {
     console.log(project)
     if(project){
       setTimeout(() => {
-        setProject({...project,conversation:dummyConversations});
+        setProject({...project,conversation:dummyConversations,versions:dummyVersion});
         setLoading(false);
         setIsGenerating(project.current_code ? false:true);
       }, 2000);
@@ -54,7 +55,7 @@ const Projects = () => {
 
 
   return project ?  (
-    <div className='flex flex-col h-screen bg-gray-900 w-full text-white'>
+    <div className='flex flex-col h-screen overflow-hidden bg-gray-900 w-full text-white'>
       <div className='flex max-sm:flex-col sm:items-center gap-4 px-4 py-2 no-scrollbar'>
         {/*left*/}
         <div className='flex items-center gap-2 sm:min-w-90 text-nowrap'>
@@ -86,8 +87,8 @@ const Projects = () => {
         </div>
       </div>
       {/* otherThan navbar */}
-      <div>
-        
+      <div className='flex flex-1 overflow-hidden gap-1'>
+        <SideBar isMenuOpen={isMenuOpen} project={project} setProject={setProject} isGenerating={isGenerating} setIsGenerating={setIsGenerating} />
       </div>
     </div>
   ) : (
