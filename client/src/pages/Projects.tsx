@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import type { Project } from '../types';
-import { ArrowBigDownDash, ArrowBigDownDashIcon, EyeIcon, EyeOffIcon, LaptopIcon, Loader2Icon, MessageSquare, SaveIcon, Smartphone, TabletIcon, XIcon } from 'lucide-react';
+import { ArrowBigDownDashIcon, EyeIcon, EyeOffIcon, LaptopIcon, Loader2Icon, MessageSquare, SaveIcon, Smartphone, TabletIcon, XIcon } from 'lucide-react';
 import { dummyConversations, dummyProjects, dummyVersion } from '../assets/assets';
 import SideBar from '../components/SideBar';
+import ProjectPreview, { type ProjectPreviewRef } from '../components/ProjectPreview';
 
 const Projects = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const Projects = () => {
   const saveProject = async() => {
 
   }
+  const previewRef = useRef<ProjectPreviewRef>(null);
 
   useEffect(()=>{
     fetchProjects();
@@ -89,6 +91,9 @@ const Projects = () => {
       {/* otherThan navbar */}
       <div className='flex flex-1 overflow-hidden gap-1'>
         <SideBar isMenuOpen={isMenuOpen} project={project} setProject={setProject} isGenerating={isGenerating} setIsGenerating={setIsGenerating} />
+        <div className='flex-1 p-2 pl-0'>
+          <ProjectPreview ref={previewRef} project={project} isGenerating={isGenerating} device={device} />
+        </div>
       </div>
     </div>
   ) : (
