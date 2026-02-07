@@ -1,8 +1,16 @@
 import express, { Request, Response } from 'express';
+import cors from "cors";
+import 'dotenv/config'
 
 const app = express();
 
 const port = 3000;
+
+const corsOptions = {
+  origin:process.env.TRUSTED_ORIGIN?.split(',') || [],
+  credentials:true
+}
+app.use(cors(corsOptions))
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Server is Live!');
