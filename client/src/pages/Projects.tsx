@@ -28,8 +28,17 @@ const Projects = () => {
     }
   }
 
-  const downloadCode = async() => {
-
+  const downloadCode = () => {
+    const code = previewRef.current?.getCode() || project?.current_code;
+    if (!code) {
+      return;
+    }
+    const element = document.createElement('a');
+    const file = new Blob([code], { type: "text/html" });
+    element.href = URL.createObjectURL(file);
+    element.download = "index.html";
+    document.body.appendChild(element);
+    element.click();
   }
 
   const togglePubish = async() => {
@@ -82,7 +91,7 @@ const Projects = () => {
           <button disabled={isSaving} onClick={saveProject} className='max-sm:hidden bg-gray-800 hover:bg-gray-700 text-white px-3.5 py-1 flex items-center gap-2 border rounded hover:scale-105 duration-300 active:scale-95 transition-all border-gray-700 cursor-pointer'>
             {isSaving ? <Loader2Icon className='size-4 animate-spin' /> : <SaveIcon className='size-4' />}Save</button>
           <Link to={`/preview/${projectId}`} className='flex items-center gap-1 px-4 py-1 border rounded bg-gray-800 hover:bg-gray-700 border-gray-700 hover:scale-105 duration-300 active:scale-95 transition-all cursor-pointer'>Preview</Link>
-          <button onClick={downloadCode} className='flex items-center gap-2 border rounded bg-linear-to-br from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white px-3.5 py-1 border-gray-700 cursor-pointer hover:scale-105 duration-300 active:scale-95 transition-all'><ArrowBigDownDashIcon className='size-4'  />Download</button>
+          <button onClick={downloadCode} className='flex items-center gap-2 border rounded bg-linear-to-br from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white px-3.5 py-1 border-gray-700 cursor-pointer hover:scale-105 duration-300 active:scale-95 transition-all' disabled={isGenerating}><ArrowBigDownDashIcon className='size-4'/>Download</button>
           <button onClick={togglePubish} className='flex items-center gap-2 border rounded bg-linear-to-br from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white px-3.5 py-1 border-gray-700 cursor-pointer hover:scale-105 duration-300 active:scale-95 transition-all'>{project.isPublished ? <EyeOffIcon className='size-4' /> : <EyeIcon className='size-4'/>}
             {project.isPublished ? "Unpublish" : "Publicsh"}
           </button>
