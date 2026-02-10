@@ -41,7 +41,7 @@ const Projects = () => {
     element.click();
   }
 
-  const togglePubish = async() => {
+  const togglePublish = async() => {
 
   }
 
@@ -92,8 +92,8 @@ const Projects = () => {
             {isSaving ? <Loader2Icon className='size-4 animate-spin' /> : <SaveIcon className='size-4' />}Save</button>
           <Link to={`/preview/${projectId}`} target='_blank' className='flex items-center gap-1 px-4 py-1 border rounded bg-gray-800 hover:bg-gray-700 border-gray-700 hover:scale-105 duration-300 active:scale-95 transition-all cursor-pointer'>Preview</Link>
           <button onClick={downloadCode} className='flex items-center gap-2 border rounded bg-linear-to-br from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white px-3.5 py-1 border-gray-700 cursor-pointer hover:scale-105 duration-300 active:scale-95 transition-all' disabled={isGenerating}><ArrowBigDownDashIcon className='size-4'/>Download</button>
-          <button onClick={togglePubish} className='flex items-center gap-2 border rounded bg-linear-to-br from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white px-3.5 py-1 border-gray-700 cursor-pointer hover:scale-105 duration-300 active:scale-95 transition-all'>{project.isPublished ? <EyeOffIcon className='size-4' /> : <EyeIcon className='size-4'/>}
-            {project.isPublished ? "Unpublish" : "Publicsh"}
+          <button onClick={togglePublish} className='flex items-center gap-2 border rounded bg-linear-to-br from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white px-3.5 py-1 border-gray-700 cursor-pointer hover:scale-105 duration-300 active:scale-95 transition-all'>{project.isPublished ? <EyeOffIcon className='size-4' /> : <EyeIcon className='size-4'/>}
+            {project.isPublished ? "Unpublish" : "Publish"}
           </button>
         </div>
       </div>
