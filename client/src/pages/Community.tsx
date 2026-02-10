@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import type { Project } from '../types';
-import { LucideLoader2, Plus, Trash2Icon } from 'lucide-react';
+import { LucideLoader2 } from 'lucide-react';
 import { dummyProjects } from '../assets/assets';
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
