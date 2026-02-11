@@ -10,6 +10,10 @@
   font-family: "Outfit", sans-serif;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 .no-scrollbar::-webkit-scrollbar{
   display: none;
 }
@@ -22,6 +26,8 @@
 .animate-fade-in{
   animation: fade-in 0.8s ease-out;
 }
+
+
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -138,6 +144,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
 }

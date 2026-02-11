@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { assets } from '../assets/assets';
+import { authClient } from '@/lib/auth-client';
+import { UserButton } from "@daveyplate/better-auth-ui";
+
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const {data:session} = authClient.useSession(); 
   return (
     <>
       <nav className="z-50 flex items-center justify-between w-full py-4 px-4 md:px-16 lg:px-24 xl:px-32 backdrop-blur border-b text-white border-slate-800">
@@ -18,10 +22,14 @@ const Navbar = () => {
           <Link to='/pricing' className='hover:text-blue-400'>Pricing</Link>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={()=>navigate('/auth/signin')} className='relative overflow-hidden px-6 py-2 font-semibold bg-white group rounded-full cursor-pointer'>
-            <span className='absolute inset-0 rounded-full bg-black scale-0  border-2 border-black group-hover:scale-160 transition-transform duration-500'></span>
-            <span className='relative z-10 text-black group-hover:text-white transition-colors duration-500'>Get Started</span>
-          </button>
+          {!session?.user ? (
+            <button onClick={()=>navigate('/auth/signin')} className='relative overflow-hidden px-6 py-2 font-semibold bg-white group rounded-full cursor-pointer'>
+              <span className='absolute inset-0 rounded-full bg-black scale-0  border-2 border-black group-hover:scale-160 transition-transform duration-500'></span>
+              <span className='relative z-10 text-black group-hover:text-white transition-colors duration-500'>Get Started</span>
+            </button>
+          ) : (
+            <UserButton size="icon" />
+          )}
           <button id="open-menu" className="md:hidden active:scale-90 transition" onClick={() => setMenuOpen(true)} >
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
           </button>
