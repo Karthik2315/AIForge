@@ -202,3 +202,30 @@ export const getUserProjects = async (req: Request, res: Response) => {
     res.status(500).json({success:false,message:"Internal Server Error"})
   }
 }
+
+// to create a function to toggle publish a user project
+export const togglePublish = async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
+    if(!userId){
+      return res.status(401).json({success:false,message:"Unauthorized"})
+    }
+    const {projectId} = req.params;
+    const project = await prisma.websiteProject.findUnique({
+      where:{id:projectId,userId}
+    })
+    if(!project){
+      return res.status(404).json({success:false,message:"Project not found"})
+    }
+    await prisma.websiteProject.update({
+      where:{id:projectId},
+      data:{
+        isPublished:!project.isPublished
+      }
+    });
+    res.status(200).json({success:true,message:!project.isPublished ? "Project published":"Project unpublished"})
+  } catch (error:unknown) {
+    console.error(error);
+    res.status(500).json({success:false,message:"Internal Server Error"})
+  }
+}
