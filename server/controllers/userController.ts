@@ -184,3 +184,21 @@ export const getUserProject = async (req: Request, res: Response) => {
     res.status(500).json({success:false,message:"Internal Server Error"})
   }
 }
+
+// to create a function to get all user projects 
+export const getUserProjects = async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
+    if(!userId){
+      return res.status(401).json({success:false,message:"Unauthorized"})
+    }
+    const projects = await prisma.websiteProject.findMany({
+      where:{userId},
+      orderBy:{updatedAt:"desc"},
+    })
+    res.status(200).json({success:true,projects})
+  } catch (error:unknown) {
+    console.error(error);
+    res.status(500).json({success:false,message:"Internal Server Error"})
+  }
+}
