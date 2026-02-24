@@ -17,7 +17,7 @@ export const getUserCredits = async (req: Request, res: Response) => {
     res.status(500).json({success:false,message:"Internal Server Error"})
   }
 }
-
+// to create a user function 
 export const createUserProject = async (req: Request, res: Response) => {
   const userId = req.userId;
   try {
