@@ -158,3 +158,29 @@ export const createUserProject = async (req: Request, res: Response) => {
     res.status(500).json({success:false,message:"Internal Server Error"})
   }
 }
+
+// to create a function to get a single user project 
+export const getUserProject = async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
+    if(!userId){
+      return res.status(401).json({success:false,message:"Unauthorized"})
+    }
+    const {projectId} = req.params;
+    const project = await prisma.websiteProject.findUnique({
+      where:{id:projectId,userId},
+      include:{
+        conversation:{
+          orderBy:{timestamp:"asc"}
+        },
+        versions:{
+          orderBy:{timestamp:"asc"}
+        }
+      }
+    })
+    res.status(200).json({success:true,project})
+  } catch (error:unknown) {
+    console.error(error);
+    res.status(500).json({success:false,message:"Internal Server Error"})
+  }
+}
