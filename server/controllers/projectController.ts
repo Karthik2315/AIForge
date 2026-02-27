@@ -169,3 +169,20 @@ export const rollbacktoVersion = async(req:Request,res:Response) => {
     res.status(500).json({success:false,message:"Internal Server Error"})
   }
 }
+
+// created a function to delete a project
+export const deleteProject = async(req:Request,res:Response) => {
+  try {
+    const userId = req.userId;
+    if(!userId){
+      return res.status(401).json({success:false,message:"Unauthorized"})
+    }
+    const {projectId} = req.params;
+    await prisma.websiteProject.delete({
+      where:{id:projectId,userId}
+    });
+    res.status(200).json({success:true,message:"Project deleted successfully"})
+  } catch (error) {
+    res.status(500).json({success:false,message:"Internal Server Error"})
+  }
+}
