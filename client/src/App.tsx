@@ -20,7 +20,7 @@ const App = () => {
 
   return (
     <div>
-      <Toaster />
+      <Toaster /> 
       {!hideNavbar && <Navbar />}
       <ParticlesBg />
       <Routes>

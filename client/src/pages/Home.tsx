@@ -1,12 +1,15 @@
+import api from '@/configs/axios';
 import { authClient } from '@/lib/auth-client';
 import { Loader2 } from 'lucide-react';
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const Home = () => {
   const {data:session} = authClient.getSession();
   const [input,setInput] = useState('');
   const [loading,setLoading] = useState(false);
+  const navigate = useNavigate();
   const onSubmitHandler = async (e:React.FormEvent) => {
     e.preventDefault();
     try {
@@ -14,16 +17,15 @@ const Home = () => {
         toast.error("Please login");
       }else if(!input.trim()){
         toast.error("Please enter a valid input");
-      }else{
-        
       }
+      setLoading(true);
+      const {data} = await api.post('/api/user/project',{initial_prompt: input.trim()});
+      setLoading(false);
+      navigate(`/projects/${data.projectId}`);
     } catch (error) {
+      setLoading(false);
       console.log(error)
     }
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
   }
 
   return (
