@@ -1,11 +1,25 @@
+import { authClient } from '@/lib/auth-client';
 import { Loader2 } from 'lucide-react';
 import React, { useState } from 'react'
+import { toast } from 'sonner';
 
 const Home = () => {
+  const {data:session} = authClient.getSession();
   const [input,setInput] = useState('');
   const [loading,setLoading] = useState(false);
   const onSubmitHandler = async (e:React.FormEvent) => {
     e.preventDefault();
+    try {
+      if(!session?.user){
+        toast.error("Please login");
+      }else if(!input.trim()){
+        toast.error("Please enter a valid input");
+      }else{
+        
+      }
+    } catch (error) {
+      console.log(error)
+    }
     setLoading(true);
     setTimeout(() => {
       setLoading(false);

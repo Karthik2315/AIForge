@@ -11,6 +11,7 @@ import Navbar from './components/Navbar'
 import { Toaster } from "sonner"
 import AuthPage from './pages/auth/AuthPage'
 import Settings from './pages/Settings'
+import ParticlesBg from './components/ParticlesBg'
 
 const App = () => {
 
@@ -21,6 +22,7 @@ const App = () => {
     <div>
       <Toaster />
       {!hideNavbar && <Navbar />}
+      <ParticlesBg />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/pricing' element={<Pricing />} />
