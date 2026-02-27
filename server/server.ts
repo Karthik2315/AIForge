@@ -27,7 +27,7 @@ const limiter = rateLimit({
   message: "Too many requests, please try again later."
 });
 
-app.use(limiter);
+//app.use(limiter);
 
 app.all('/api/auth/{*any}', toNodeHandler(auth));
 
