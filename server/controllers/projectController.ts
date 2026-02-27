@@ -186,3 +186,23 @@ export const deleteProject = async(req:Request,res:Response) => {
     res.status(500).json({success:false,message:"Internal Server Error"})
   }
 }
+
+export const getProjectPreview = async(req:Request,res:Response) => {
+  try {
+    const userId = req.userId;
+    if(!userId){
+      return res.status(401).json({success:false,message:"Unauthorized"})
+    }
+    const {projectId} = req.params;
+    const project = await prisma.websiteProject.findUnique({
+      where:{id:projectId,userId},
+      include:{versions:true}
+    });
+    if(!project){
+      return res.status(404).json({success:false,message:"Project not found"})
+    }
+    res.status(200).json({success:true,project})
+  } catch (error:unknown) {
+    res.status(500).json({success:false,message:"Internal Server Error"})
+  }
+}
