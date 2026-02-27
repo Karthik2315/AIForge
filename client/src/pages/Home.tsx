@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const Home = () => {
-  const {data:session} = authClient.getSession();
+  const {data:session} = authClient.useSession();
   const [input,setInput] = useState('');
   const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
