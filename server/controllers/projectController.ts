@@ -206,3 +206,17 @@ export const getProjectPreview = async(req:Request,res:Response) => {
     res.status(500).json({success:false,message:"Internal Server Error"})
   }
 }
+
+// get published projects
+export const getPublishedProjects = async(req:Request,res:Response) => {
+  try {
+    const projects = await prisma.websiteProject.findMany({
+      where:{isPublished:true},
+      include:{user:true}
+    });
+    res.status(200).json({success:true,projects})
+  } catch (error:unknown) {
+    res.status(500).json({success:false,message:"Internal Server Error"})
+  }
+};
+
