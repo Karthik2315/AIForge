@@ -260,7 +260,7 @@ export const saveProjectCode = async(req:Request,res:Response) => {
       }
     });
     res.status(200).json({success:true,message:"Project code saved successfully"})
-  } catch (error) {
+  } catch (error:unknown) {
     res.status(500).json({success:false,message:"Internal Server Error"})
   }
 }

@@ -5,6 +5,7 @@ import { toNodeHandler } from 'better-auth/node';
 import { auth } from './lib/auth.js';
 import userRouter from './routes/userRouter.js';
 import rateLimit from "express-rate-limit";
+import projectRouter from './routes/projectRoutes.js';
 
 const app = express();
 const port = 3000;
@@ -31,6 +32,7 @@ app.use(limiter);
 app.all('/api/auth/{*any}', toNodeHandler(auth));
 
 app.use('/api/user', userRouter);
+app.use('/api/project',projectRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Server is Live!');
