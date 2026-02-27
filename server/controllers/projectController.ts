@@ -3,7 +3,7 @@ import prisma from "../lib/prisma.js";
 import openai from "../config/openAI.js";
 
 // controller function to make Revision 
-export const getUserCredits = async (req: Request, res: Response) => {
+export const makeRevision = async (req: Request, res: Response) => {
   const userId = req.userId;
   try {
     const user = await prisma.user.findUnique({
@@ -233,6 +233,34 @@ export const getProjectById = async(req:Request,res:Response) => {
     }
     res.status(200).json({success:true,code:project.current_code})
   } catch (error:unknown) {
+    res.status(500).json({success:false,message:"Internal Server Error"})
+  }
+}
+
+// controller function to save project code 
+export const saveProjectCode = async(req:Request,res:Response) => {
+  try {
+    const userId = req.userId;
+    if(!userId){
+      return res.status(401).json({success:false,message:"Unauthorized"})
+    }
+    const {projectId} = req.params;
+    const {code} = req.body;
+    if(!projectId || !code){
+      return res.status(400).json({success:false,message:"Project ID and code are required"})
+    }
+    const project = await prisma.websiteProject.findUnique({
+      where:{id:projectId,userId}
+    });
+    await prisma.websiteProject.update({
+      where:{id:projectId,userId},
+      data:{
+        current_code:code,
+        current_version_index:''
+      }
+    });
+    res.status(200).json({success:true,message:"Project code saved successfully"})
+  } catch (error) {
     res.status(500).json({success:false,message:"Internal Server Error"})
   }
 }
