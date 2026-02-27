@@ -129,4 +129,43 @@ export const getUserCredits = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({success:false,message:"Internal Server Error"})
   }
+};
+
+// function to rollback to a specific version 
+export const rollbacktoVersion = async(req:Request,res:Response) => {
+  try {
+    const userId = req.userId;
+    if(!userId){
+      return res.status(401).json({success:false,message:"Unauthorized"})
+    }
+    const {projectId,versionId} = req.params;
+    const project = await prisma.websiteProject.findUnique({
+      where:{id:projectId},
+      include:{versions:true}
+    });
+    if(!project){
+      return res.status(404).json({success:false,message:"Project not found"})
+    }
+    const version =project.versions.find((version) => version.id === versionId);
+    if(!version){
+      return res.status(404).json({success:false,message:"Version not found"})
+    }
+    await prisma.websiteProject.update({
+      where:{id:projectId},
+      data:{
+        current_code:version.code,
+        current_version_index:version.id
+      }
+    })
+    await prisma.conversation.create({
+      data:{
+        role:"assistant",
+        content:`I've have rolled back your website to selected version. Please preview it to see the changes.`,
+        projectId:projectId || '',
+      }
+    }) 
+    res.status(200).json({success:true,message:"Rolled back successfully"})
+  } catch (error:unknown) {
+    res.status(500).json({success:false,message:"Internal Server Error"})
+  }
 }
