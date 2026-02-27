@@ -220,3 +220,19 @@ export const getPublishedProjects = async(req:Request,res:Response) => {
   }
 };
 
+// get project by id
+export const getProjectById = async(req:Request,res:Response) => {
+  try {
+    const {projectId} = req.params;
+    const project = await prisma.websiteProject.findUnique({
+      where:{id:projectId},
+      include:{user:true}
+    });
+    if(!project || project.isPublished === false || project.current_code === null){
+      return res.status(404).json({success:false,message:"Project not found"})
+    }
+    res.status(200).json({success:true,code:project.current_code})
+  } catch (error:unknown) {
+    res.status(500).json({success:false,message:"Internal Server Error"})
+  }
+}
