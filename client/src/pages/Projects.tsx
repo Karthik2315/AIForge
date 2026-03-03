@@ -45,11 +45,28 @@ const Projects = () => {
   }
 
   const togglePublish = async() => {
-
+    try {
+      const {data} = await api.get(`/api/user/publish-toggle/${projectId}`);
+      toast.success(data.message);
+      setProject((prev)=> prev ? ({...prev,isPublished : !prev.isPublished}) : null);
+    } catch (error:unknown) {
+      console.log(error)
+    }
   }
 
   const saveProject = async() => {
-
+    if(!previewRef.current) return ;
+    const code = previewRef.current.getCode();
+    if(!code) return ;
+    setIsSaving(true);
+    try {
+      const {data} = await api.put(`/api/project/save/${projectId}`,{code});
+      toast.success(data.message);
+    } catch (error:unknown) {
+      console.log(error);
+    }finally{
+      setIsSaving(false);
+    }
   }
   const previewRef = useRef<ProjectPreviewRef>(null);
 
